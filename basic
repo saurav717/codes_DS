@@ -1,0 +1,73 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+
+struct node
+{
+  int val;
+  struct node *next;
+  struct node *prev;
+};
+
+struct node *HEAD = NULL, *TAIL = NULL;
+
+void insert(int num)
+{
+  struct node *p;
+  p = (struct node*)malloc(sizeof(struct node));
+  p->val = num;
+  p->next = NULL;
+
+  if(HEAD == NULL)
+  {
+    HEAD = p;
+  }
+
+  else
+  {
+    for(struct node *q = HEAD; q->next !=NULL; q=q->next)
+    {
+    }
+    q->next = p;
+  }
+}
+
+void print_list()
+{
+  struct node *q;
+
+  for( q=HEAD; q!=NULL; q=q->next )
+  {
+    printf("%d ", q->val );
+  }
+
+}
+
+
+
+
+int main()
+{
+  int num;
+
+  while(1)
+  {
+    printf("1 - enter value\n");
+    printf("2 - delete value\n");
+    printf("3 - find value\n");
+    printf("4 - delete list\n");
+    printf("5 - print list\n");
+    printf("0 - exit\n");
+
+    int choice;
+    printf("enter your choice\n");
+    scanf("%d", &choice);
+
+    switch(choice)
+    {
+      case 1: scanf("%d", &num);
+              insert(num);
+              break;
+    }
+  }
+}

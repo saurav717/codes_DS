@@ -123,99 +123,59 @@ void right_rot_colour_change(struct node *q)
 
 void left_rotation(struct node*q, int exists)   // q here must be the grand parent of the just inserted child
 {
-  struct node *q_rchild = q->right, *q_parent; // child node is the new node inserted generally;
+  printf("function call working\n");
 
-                                      // the rest is as it is
-//  q_parent = q->parent;             // here q_rchild is the
-//  q_rchild = q->right;
+  struct node *q_rchild = q->right, *q_parent; // child node is the new node inserted generally;
 
   if(q!=ROOT)
   {
     q_parent = q->parent;
+    printf("q = %d", q->val);
     printf("q_parent = %d", q_parent ->val);
   }
-
-  //if(q_parent -> right == q && q_parent !=NULL && q!=NULL)
-  //{
-  //  printf("true\n");
-  //}
-
-//  printf("q = %d", q->val);/
-//  printf("q_rchild = %d", q_rchild->val);
-//  temp = q->parent;
-//  if(q->val==75)                             // remove these after debugging/
-//  {
-//    temp = q->parent;
-//    printf("q_parent = %d", temp->val);
-//  }
-
-//  if(q->val == 85)
-//  {
-//    temp2 = q->parent;
-//    printf("parent of 85 = %d", temp2->val);
-//  }
-
-//  printf("\n\n parent of 75 = %d", temp->val);
-//  printf("\n\n parent of 84 = %d", temp2->val);
-
-//  printf("q_parent = %d", q_parent->val);
-//  printf("\n\n in left rotation function left rotation\n\n");
 
 
   if(q==ROOT)
   {
-  //  printf("q = %d, q_parent = %d, q_rchild = %d", q->val, q_parent->val, q_rchild->val);
-
-    //printf("this ROOT thing should work\n");
     ROOT = q_rchild;
-    q->right = q_rchild ->left;
+    q->right = q_rchild ->left;                              // left rotation
     q_rchild ->left = q;
     q->parent = q_rchild;
-  //  q_rchild ->parent = NULL;
-  //  printf("this root thing should work\n");
     left_rot_colour_change(q_rchild);
-  //  return;
   }
   else if(q_parent -> left == q)
   {
-//    printf("this should be working reeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n");
-    //printf("left rotation  q = %d, q_parent = %d, q_rchild = %d\n", q->val, q_parent->val, q_rchild->val);
-
-  //  printf("this should work\n");
+    struct node *q_rchild_left;
+    printf("q_parent left works\n");
     q_parent ->left = q_rchild;
     q->right = q_rchild -> left;
+    if(q_rchild->left!=NULL)
+    {
+      q_rchild->left->parent = q;
+    }                            // left rotation
     q_rchild ->left = q;
     q_rchild->parent = q_parent;
     q->parent = q_rchild;
 
-  //  if(q == ROOT)
-    //{
-  //    printf("this should not work too\n");
-    //  ROOT = q_rchild;
-  //  }
     if(exists == yes)
     {
       left_rot_colour_change(q_rchild);
     }
-  //  return;
   }
 
   else if(q_parent -> right == q)
   {
-    //printf("left rotation  q = %d, q_parent = %d, q_rchild = %d\n", q->val, q_parent->val, q_rchild->val);
-  //  printf("why is this not workinggggggggggggg\n");
-    //printf("this should now work\n");
-  //  q_rchild = q->right;q_parent = q->parent;
+    printf("works\n");                                           // left rotation
     q_parent ->right = q_rchild;
     q->right = q_rchild ->left;
+    if(q_rchild->left!=NULL)
+    {
+      q_rchild->left->parent = q;
+    }
     q_rchild ->left = q;
-    q_rchild->parent= q_parent;
+    q_rchild->parent = q_parent;
     q->parent = q_rchild;
 
-//    if(q_parent == ROOT)
-//    {
-//      ROOT = q;
-//    }
     if(exists==yes)
     {
       left_rot_colour_change(q_rchild);
@@ -223,7 +183,6 @@ void left_rotation(struct node*q, int exists)   // q here must be the grand pare
     //return;
   }
 
-//  printf("is this function even working\n");
 }
 
 
@@ -231,31 +190,35 @@ void right_rotation(struct node *q, int exists)  //q is the node that is to be r
 {                                    // decide where to rotate in a seperate function
   struct node *q_lchild, *q_parent;
 
-  if(q!=ROOT)
+  if(q!=ROOT)                                                   // right rotation
   {
       q_parent = q->parent;
   }
 
   q_lchild = q->left;
 
-//  printf("q = %d, q_parent = %d, q_lchild = %d", q->val, q_parent->val, q_lchild->val);
-
   if(q==ROOT)
   {
+
     ROOT = q_lchild;
     q->left = q_lchild->right;
     q_lchild->right = q;
     q->parent = q_lchild;
-  //  q_lchild->parent = NULL;
 
   right_rot_colour_change(q_lchild);
   }
 
-  if(q_parent->left == q)
+  if(q_parent->left == q)                                     // right rotation
   {
-  //  printf("q_parent -> left = q working\n");
+  struct node *q_lchild_right, *q_lchild_parent;
+
+
     q_parent->left = q_lchild;
     q->left = q_lchild -> right;
+    if(q_lchild->right!=NULL)
+    {
+      q_lchild->right->parent = q;
+    }
     q_lchild ->right = q;
     q_lchild->parent = q_parent;
     q->parent = q_lchild;
@@ -266,10 +229,16 @@ void right_rotation(struct node *q, int exists)  //q is the node that is to be r
     }
   }
 
-  else if(q_parent->right == q)
+  else if(q_parent->right == q)                                // right rotation
   {
+    struct node *q_lchild_right , *q_lchild_parent;
     q_parent ->right = q_lchild;
     q->left = q_lchild->right;
+    if(q_lchild->right!=NULL)
+    {
+      q_lchild->right->parent = q;
+
+    }
     q_lchild->right = q;
     q_lchild ->parent = q_parent;
     q->parent = q_lchild;
@@ -288,7 +257,7 @@ void recolour(struct node *q) // change the colours of both the childs and the n
 
   if(q->colour == Red)
   {
-    q->colour = Blue;
+    q->colour = Blue;                                          // recolouring
   }
 
   else if(q->colour == Blue)
@@ -297,25 +266,22 @@ void recolour(struct node *q) // change the colours of both the childs and the n
 
     if(q==ROOT)
     {
-//      printf("colour change of main node should work\n");
       q->colour = Blue;
     }
   }
 
   if(q_lchild ->colour == Red)
   {
-//  printf("colour change of left child should work/n");
     q_lchild ->colour = Blue;
   }
 
   else if(q_lchild ->colour == Blue)
   {
     q_lchild ->colour = Red;
-  }
+  }                                                                // recolour
 
   if(q_rchild->colour == Red)
   {
-//    printf("colour change of right child should work\n");
     q_rchild ->colour = Blue;
   }
 
@@ -334,9 +300,7 @@ void horizontal(struct node *t, int level)
 
     horizontal(t->right, level + 1);
     while (l--) printf("    ");
-  //  setcolour(2);
 
-  //  printf("-> %d\n", t->val);
     if(t->colour == Red)
     {
       red();
@@ -371,47 +335,32 @@ void check_for_cases(struct node *q)
 
   if(q->colour == Red && q_parent->colour == Red)  //here q is the new node that is inserted
   {
-//    printf("this function working\n");
+    printf("left rotation required this function working\n");
       if(q_grand_parent ->right == q_parent)
       {
-  
+
           if(q_grand_parent ->left == NULL)
           {
-          //  printf("grand_parent->left = NULL working\n");
-//            printf("this working too\n");
+            printf("we entered here\n");
               if(q == q_parent ->left)
               {
-            //    printf("q = q_parent ->left working\n");
-            //    printf("this should not work\n");
-            //    printf("this working too\n");
-          //      horizontal(ROOT, 1);
+                printf("this should not work\n");
+
                 right_rotation(q_parent, no);       // no - for colout change not required
-          //      printf("it is of this part\n");
-        //        horizontal(ROOT, 1);
-            //    printf("right rotation done\n");
-              //  printf("\n\n gpp = %d", gpp->val);
-                left_rotation(q_grand_parent, yes); // yes - for colour change required
-              //  check_for_cases(q_parent);
-            //    q_parent = q->parent;
-              //  q_grand_parent = q_parent->parent;
-            //    printf("q = %d, q_parent = %d, q_grand_parent = %d\n",q->val, q_parent->val, q_grand_parent->val );
-            //    printf("why is this not working\n");
-            //    printf("left rotation done\n");
-            //    horizontal(ROOT, 1);
+                printf("right rotation done\n");
+              //  left_rotation(q_parent, yes);       // yes - for colour change required
+                left_rotation(q_grand_parent,yes);
               }
 
               else if(q == q_parent ->right)
               {
               //  printf("this should work\n");
                 left_rotation(q_grand_parent,yes);
-              //  printf("this worked\n");
-              //  printf("this working\n");
               }
           }
 
-          else if(q_grand_parent ->left !=NULL) //this case is for when the sibliing of parent is red
-          {                                     //doing this in a seperate function
-        //    printf("q_grand_parent ! = NULL working\n");
+          else if(q_grand_parent ->left !=NULL)     //this case is for when the sibliing of parent is red
+          {                                         //doing this in a seperate function
               q_parent_sibling = q_grand_parent->left;
 
               if(q == q_parent ->left)
@@ -431,11 +380,8 @@ void check_for_cases(struct node *q)
 
               else if(q == q_parent ->right)
               {
-            //    printf("q = q_parent ->right should be working\n");
                 if(q_parent_sibling ->colour == Red)
                 {
-              //     printf("parent_sibling ->colour = Blue should be working where it should not be\n");
-              //     printf("q_grand_parent = %d\n", q_grand_parent->val);
 
                   recolour(q_grand_parent);
                   if(q_grand_parent!=ROOT)
@@ -446,7 +392,6 @@ void check_for_cases(struct node *q)
 
                 else if(q_parent_sibling ->colour == Blue)
                 {
-              //    printf("parent_sibling ->colour = Blue should be working\n");
                   left_rotation(q_grand_parent, yes);
                   check_for_cases(q_grand_parent);
                 }
@@ -456,20 +401,16 @@ void check_for_cases(struct node *q)
 
       else if(q_grand_parent ->left == q_parent)
       {
-        //printf("q_grand_parent -> left = q_parent case working\n");
         if(q_grand_parent -> right==NULL)
         {
-        //  printf("grand_parent ->right == NULL should work\n");
             if(q == q_parent->left)
             {
-        //      printf("right rotation\n");
               right_rotation(q_grand_parent, yes);
             }
 
-            else if(q == q_parent ->left)
+            else if(q == q_parent ->right)
             {
 
-      //        printf("left and right\n");
               left_rotation(q_parent, no);
               right_rotation(q_grand_parent, yes);
             }
@@ -477,15 +418,12 @@ void check_for_cases(struct node *q)
 
         else if(q_grand_parent ->right !=NULL)
         {
-          //printf("this should be working now\n");
             q_parent_sibling = q_grand_parent->right;
 
             if(q == q_parent-> left)
             {
               if(q_parent_sibling ->colour == Red)
               {
-              //  printf("this recolour should now work\n");
-            //    printf("this should now work too\n");
                 recolour(q_grand_parent);
                 if(q_grand_parent!=NULL)
                 {
@@ -501,10 +439,8 @@ void check_for_cases(struct node *q)
 
             else if(q == q_parent ->right)
             {
-            //  printf("this should now be working\n");
               if(q_parent_sibling->colour == Red)
               {
-              //  printf("this recolour thing should now work\n");
                 recolour(q_grand_parent);
                 check_for_cases(q_grand_parent);
               }
@@ -542,9 +478,6 @@ void insert(int num)
   else
   {
     insert_rp(p, ROOT);
-
-    parent = p->parent;
-    grand_parent = parent->parent;
     check_for_cases(p);
 
   }

@@ -79,11 +79,12 @@ struct node
 {
   int val;
   struct node *left, *right;
+  struct node *parent;
 };
 
 struct node *ROOT = NULL;
 
-void red () {
+void red() {
   printf("\033[1;31m");
 }
 
@@ -99,6 +100,7 @@ void insert_rp(struct node *p, struct node *q)
     if(q->right == NULL)
     {
       q->right = p;
+      p->parent = q;
     }
 
     else if(q->right!=NULL)
@@ -112,6 +114,7 @@ void insert_rp(struct node *p, struct node *q)
     if(q->left == NULL)
     {
       q->left = p;
+      p->parent = q;
     }
 
     else if(q->left!=NULL)
@@ -402,7 +405,6 @@ void horizontal(struct node *t, int level)
     horizontal(t->right, level + 1);
     while (l--) printf("    ");
   //  setcolour(2);
-    blue();
     printf("-> %d\n", t->val);
     horizontal(t->left, level + 1);
 }
@@ -418,6 +420,38 @@ void print_vertical(struct node *nd, int *x, int y)
     print_vertical(nd->right, x, y + 4);
 }
 
+void print_parent(int num, struct node *q)
+{
+  if(q ->val==num)
+  {
+    if(q==ROOT)
+    {
+      printf("this is root value\n");
+    }
+
+    else
+    {
+      struct node *parent = q->parent;
+      printf("parent of %d is %d",q->val, parent ->val);
+    }
+  }
+
+  else if(num > q->val)
+  {
+    print_parent(num, q->right);
+  }
+
+  else if(num < q->val)
+  {
+    print_parent(num, q->left);
+  }
+
+  else
+  {
+    printf("that number does not exist\n");
+  }
+}
+
 
 
 int main()
@@ -426,7 +460,7 @@ int main()
   int x = 0;
 
 //  printf(“\033[0;31m”); //Set the text to the color red
-//    printf("\033[1;31m");
+//    printf("\033[1;31m")
 
 
   while(1)
@@ -440,6 +474,7 @@ int main()
     printf("6 - print tree\n");
     printf("7 - print_horizontal\n");
     printf("8 - print vertical\n");
+    printf("9 - print parent of a value\n");
     printf("enter your choice\n");
 
     int choice;
@@ -466,6 +501,9 @@ int main()
       case 7: horizontal(ROOT, 1);break;
 
       case 8: print_vertical(ROOT, &x, 0);printf("\n\n");break;
+
+      case 9: printf("enter a value\n");
+              scanf("%d", &num); print_parent(num, ROOT);break;
 
       default: printf("enter valid choice\n");
 
